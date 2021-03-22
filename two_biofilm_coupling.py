@@ -19,7 +19,7 @@ k_theta = 0.29          # Threshold for glutamate modulation of coupling strengt
 delta_w_0 = 1           # Maximal Glutamate-induced frequency shift
 k_omega = 0.19          # Glutamate threshold inhibition of frequency shift
 G_t = 1                 # External Glutate Concentration
-K = 6.37                # Glutmate flow rate
+beta = 6.37                # Glutmate flow rate
 
 def step(x):
     '''
@@ -55,16 +55,11 @@ def g_con(G, theta):
     return ((alpha * G) / (k_g + G)) * (1 - np.sin(theta))
 
 def g_add(g):
-    # TODO: Missing equation, emailed authors and waiting on response
-    return K * g
+    return beta * g
 
 def model(z, t):
     '''
     Model for all of the differential equations. 
-
-    FIXME: I do not know whether or not we actually need a t in there since it
-    is not used in any of the equations? Regardless, I will leave it in there
-    for now.
     '''
     dtheta1_dt = w_0 + d_omega(z[2], z[0]) + (kuramato(z[2]) * np.sin(z[1] - z[0]))
     dtheta2_dt = w_0 + d_omega(z[2], z[1]) + (kuramato(z[2]) * np.sin(z[0] - z[1]))
@@ -75,6 +70,35 @@ def model(z, t):
 
 
 # ============================================================================ #
+'''
+FIXME:
+
+Hmm, not sure if this is actually an issue, but at the moment, with the initial 
+conditions below, the phase difference is just approaching 0 all the time. 
+
+This is different from what my intuition should suggest but I can't seem to figure
+out what might be going wrong that would bring this problem up. That is, when the
+stress of a particular biofilm increases (due to a variety of things, but let
+us assume the easiest version in which the only stressor is glutamate concentration
+
+We would assume, according to the paper that in the case that we have low glutamate
+concentration they would start to go out of phase in order to share resources, but
+it seems that that does not really happen. Instead they both just decrease in size
+until glutamate concentration can increase, and then at that moment, they just
+keep on going) This makes sense at large concentrations of glutamate, and if we 
+keep glutamate concentration constant at some large value, we see that they are in
+phase overtime.
+
+Though, with small concentration also with zero change in glutamate, we see that
+there is not that much different from if Glutamate initial value is large which is
+not what we should expect? I believe that we want them to start to shift out
+of phase with low glutamate value, but maybe my time scale is way too large.
+
+I am also looking at the supplemental materials and see that there is a little
+bit of information on when they actually grab the information that they do, and it
+seems that they grab information at steady state, but it doesn't take long for them
+to go into a steady state solution.
+'''
 
 # Initial conditions
 # [theta_1, theta_2, G, r1, r2]
