@@ -15,7 +15,7 @@ delta_g = 1.2           # Glutamate Consumption Rate
 delta_r = 4.46          # Biomass degradation rate
 k_r = 1.27              # Saturation threshold for biomass degradation
 k_g = 0.01              # Saturation threshold for glutamate consumption
-K_0 = 0.073             # Maximum coupling strength 
+K_0 = 0.016             # Maximum coupling strength FIXME: (This is set at the trkA mutation)
 k_theta = 0.29          # Threshold for glutamate modulation of coupling strength
 delta_w_0 = 1           # Maximal Glutamate-induced frequency shift
 k_omega = 0.19          # Glutamate threshold inhibition of frequency shift
@@ -74,9 +74,9 @@ def model(z, t):
     consume_3 = g_con(z[3], z[2])
 
     # Phase Change ODEs
-    dtheta1_dt = w_0 + d_omega(z[3], z[0]) + (kuramato_strength * np.sin(z[1] - z[0]))
+    dtheta1_dt = w_0 + d_omega(z[3], z[0]) + (kuramato_strength * np.sin(z[1] - z[0])) #+ (kuramato_strength * np.sin(z[2] - z[0]))
     dtheta2_dt = w_0 + d_omega(z[3], z[1]) + (kuramato_strength * np.sin(z[0] - z[1])) + (kuramato_strength * np.sin(z[2] - z[1]))  # Extrapolating by saying kuramato coupling strength on both sides of this
-    dtheta3_dt = w_0 + d_omega(z[3], z[2]) + (kuramato_strength * np.sin(z[1] - z[2]))
+    dtheta3_dt = w_0 + d_omega(z[3], z[2]) + (kuramato_strength * np.sin(z[1] - z[2])) #+ (kuramato_strength * np.sin(z[0] - z[2]))
 
     # Change in Concentration
     biofilm_consumption = consume_1 + consume_2 + consume_3
@@ -107,6 +107,10 @@ This model has an issue at the moment, and I am hesitant to extrapolate any furt
 since we do not really know much. At the moment, we get graphs where the glutamate 
 concentration just dives down to 0 pretty quickly, which for some reason makes
 our r values negative.
+
+FIXME: Consumption just goes negative for some reason. I believe under further
+investigation, this is coming from the glutamate concentration going negative? 
+I wonder whether or not I am missing terms in glutamate flow.
 '''
 
 # Initial conditions
@@ -114,7 +118,7 @@ our r values negative.
 z0 = [0, 0.1, 0.2, G_t, 0, 0, 0]
 
 # Set up time
-t = np.linspace(0, 500, num=10000)
+t = np.linspace(0, 100, num=1000)
 
 # ODE Solve
 z = odeint(model, z0, t)

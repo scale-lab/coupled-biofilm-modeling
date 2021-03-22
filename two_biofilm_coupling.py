@@ -14,11 +14,11 @@ delta_g = 1.2           # Glutamate Consumption Rate
 delta_r = 4.46          # Biomass degradation rate
 k_r = 1.27              # Saturation threshold for biomass degradation
 k_g = 0.01              # Saturation threshold for glutamate consumption
-K_0 = 0.073             # Maximum coupling strength 
+K_0 = 0.016             # Maximum coupling strength FIXME: (This is set at the trkA mutation)
 k_theta = 0.29          # Threshold for glutamate modulation of coupling strength
 delta_w_0 = 1           # Maximal Glutamate-induced frequency shift
 k_omega = 0.19          # Glutamate threshold inhibition of frequency shift
-G_t = 1                 # External Glutate Concentration
+G_t = 1.0                 # External Glutate Concentration
 beta = 6.37                # Glutmate flow rate
 
 def step(x):
@@ -64,6 +64,7 @@ def model(z, t):
     dtheta1_dt = w_0 + d_omega(z[2], z[0]) + (kuramato(z[2]) * np.sin(z[1] - z[0]))
     dtheta2_dt = w_0 + d_omega(z[2], z[1]) + (kuramato(z[2]) * np.sin(z[0] - z[1]))
     dGdt = g_add(G_t - z[2]) - g_con(z[2], z[0]) - g_con(z[2], z[1]) - (delta_g * z[3] * z[2]) - (delta_g * z[4] * z[2])
+    #dGdt = 0
     dr1dt = g_con(z[2], z[0]) - ((delta_r * z[3]) / (k_r + z[3]))
     dr2dt = g_con(z[2], z[1]) - ((delta_r * z[4]) / (k_r + z[4]))
     return [dtheta1_dt, dtheta2_dt, dGdt, dr1dt, dr2dt] 
@@ -105,7 +106,7 @@ to go into a steady state solution.
 z0 = [0, 0.1, G_t, 0, 0]
 
 # Set up time
-t = np.linspace(0, 100, num=1000)
+t = np.linspace(0, 300, num=5000)
 
 # ODE Solve
 z = odeint(model, z0, t)
@@ -144,11 +145,11 @@ ax[1,0].set_title("Sizes of Two Coupled Biofilm Model")
 ax[1,0].legend()
 
 # Glutamate consumptions
-ax[1,1].plot(t, consumption_1, label="Consumption 1")
-ax[1,1].plot(t, consumption_2, label="Consumption 2")
+ax[1,1].plot(t, np.abs(consumption_1 - consumption_2), label="Consumption difference")
+# ax[1,1].plot(t, consumption_2, label="Consumption 2")
 ax[1,1].set_ylabel("Consumption")
 ax[1,1].set_xlabel("Time")
-ax[1,1].set_title("Consumption of Two Coupled Biofilm Model")
-ax[1,1].legend()
+ax[1,1].set_title("Consumption Difference of Two Coupled Biofilm Model")
+# ax[1,1].legend()
 
 plt.show()
