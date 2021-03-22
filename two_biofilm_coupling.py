@@ -19,6 +19,7 @@ k_theta = 0.29          # Threshold for glutamate modulation of coupling strengt
 delta_w_0 = 1           # Maximal Glutamate-induced frequency shift
 k_omega = 0.19          # Glutamate threshold inhibition of frequency shift
 G_t = 1                 # External Glutate Concentration
+K = 6.37                # Glutmate flow rate
 
 def step(x):
     '''
@@ -41,7 +42,7 @@ def d_omega(G, theta):
     '''
     Expresses change in the frequency of some arbitrary biofilm
     '''
-    cos_out = math.cos(theta)
+    cos_out = np.cos(theta)
     denominator = 1 + (G / k_omega)
     out = (delta_w_0 / denominator) * cos_out * step(cos_out)
     return out 
@@ -51,11 +52,11 @@ def g_con(G, theta):
     Refers to glutamate consumption for a particular biofilm, representative of
     theta
     '''
-    return ((alpha * G) / (k_g + G)) * (1 - math.sin(theta))
+    return ((alpha * G) / (k_g + G)) * (1 - np.sin(theta))
 
 def g_add(g):
     # TODO: Missing equation, emailed authors and waiting on response
-    return g
+    return K * g
 
 def model(z, t):
     '''
@@ -65,8 +66,8 @@ def model(z, t):
     is not used in any of the equations? Regardless, I will leave it in there
     for now.
     '''
-    dtheta1_dt = w_0 + d_omega(z[2], z[0]) + (kuramato(z[2]) * math.sin(z[1] - z[0]))
-    dtheta2_dt = w_0 + d_omega(z[2], z[1]) + (kuramato(z[2]) * math.sin(z[0] - z[1]))
+    dtheta1_dt = w_0 + d_omega(z[2], z[0]) + (kuramato(z[2]) * np.sin(z[1] - z[0]))
+    dtheta2_dt = w_0 + d_omega(z[2], z[1]) + (kuramato(z[2]) * np.sin(z[0] - z[1]))
     dGdt = g_add(G_t - z[2]) - g_con(z[2], z[0]) - g_con(z[2], z[1]) - (delta_g * z[3] * z[2]) - (delta_g * z[4] * z[2])
     dr1dt = g_con(z[2], z[0]) - ((delta_r * z[3]) / (k_r + z[3]))
     dr2dt = g_con(z[2], z[1]) - ((delta_r * z[4]) / (k_r + z[4]))
@@ -80,15 +81,50 @@ def model(z, t):
 z0 = [0, 0.1, G_t, 0, 0]
 
 # Set up time
-t = np.linspace(0, 5)
+t = np.linspace(0, 100, num=1000)
 
 # ODE Solve
 z = odeint(model, z0, t)
 
+# Coupling Strength based off of two oscillators
+kuramato = np.array([kuramato(g) for g in z[:,2]])
+stress_1 = np.array([1 + np.sin(x) for x in z[:,0]])
+stress_2 = np.array([1 + np.sin(x) for x in z[:,1]])
+consumption_1 = np.array([g_con(x[0], x[1]) for x in zip(z[:,2], z[:,0])])
+consumption_2 = np.array([g_con(x[0], x[1]) for x in zip(z[:,2], z[:,1])])
+
+# Create subplots
+fig, ax = plt.subplots(2,2)
+
 # Graph the phases
-plt.plot(t, z[:,0])
-plt.plot(t, z[:,1])
-plt.ylabel("Phase")
-plt.xlabel("Time")
-plt.title("Phase Change of Coupled Biofilm Model")
+# plt.plot(t, z[:,0], label="theta1")
+# plt.plot(t, z[:,1], label="theta2")
+ax[0,0].plot(t, np.abs(z[:,0] - z[:,1]), label="phase difference")
+ax[0,0].set_ylabel("Phase Difference")
+ax[0,0].set_xlabel("Time")
+ax[0,0].set_title("Phase Change of Coupled Biofilm Model")
+
+# Graph coupling strength
+ax[0,1].plot(t, kuramato, label="coupling strength")
+ax[0,1].set_ylabel("Coupling Strength")
+ax[0,1].set_xlabel("Time")
+ax[0,1].set_title("Coupling Strength of Two Coupled Biofilm Model")
+
+# Sizes of Coupled Biofilms
+ax[1,0].plot(t, z[:,3], label="r1")
+ax[1,0].plot(t, z[:,4], label="r2")
+ax[1,0].plot(t, z[:,2], label="Glutamate Concentration")
+ax[1,0].set_ylabel("Sizes")
+ax[1,0].set_xlabel("Time")
+ax[1,0].set_title("Sizes of Two Coupled Biofilm Model")
+ax[1,0].legend()
+
+# Glutamate consumptions
+ax[1,1].plot(t, consumption_1, label="Consumption 1")
+ax[1,1].plot(t, consumption_2, label="Consumption 2")
+ax[1,1].set_ylabel("Consumption")
+ax[1,1].set_xlabel("Time")
+ax[1,1].set_title("Consumption of Two Coupled Biofilm Model")
+ax[1,1].legend()
+
 plt.show()
