@@ -5,6 +5,10 @@ from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 import seaborn as sns 
 
+# FIXME: Get this in the same format as the other files that I have created
+# so that we get a centralized center that contains all of the functions that I 
+# need so later on, extrapolating into many biofilms will be much easier.
+
 # Use seaborn themes instead of matplotlib
 sns.set()
 
