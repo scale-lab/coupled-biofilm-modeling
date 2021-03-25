@@ -1,6 +1,5 @@
-import numpy as np 
 from scipy.integrate import odeint 
-import matplotlib
+import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns 
 import parameters as param
@@ -34,7 +33,6 @@ def model(z, t):
     total_biomass_consump = biomass_consump_1 + biomass_consump_2
     total_metabolic_consump = func.m_consump(z[3], z[2]) + func.m_consump(z[4], z[2])
     dGdt = func.g_add(param.G_t - z[2]) - total_biomass_consump - total_metabolic_consump
-    #dGdt = 0       # I added this to simulate constant glutamate in chamber for phase -> 0
 
     # Biofilm Growth Rates
     dr1dt = biomass_consump_1 - ((param.delta_r * z[3]) / (param.k_r + z[3]))
@@ -87,7 +85,7 @@ ax[1,0].set_title("Sizes of Two Coupled Biofilm Model")
 ax[1,0].legend()
 
 # Glutamate consumptions
-ax[1,1].plot(t, np.abs(consumption_1 - consumption_2), label="Consumption difference"))
+ax[1,1].plot(t, np.abs(consumption_1 - consumption_2), label="Consumption difference")
 ax[1,1].set_ylabel("Consumption")
 ax[1,1].set_xlabel("Time")
 ax[1,1].set_title("Consumption Difference of Two Coupled Biofilm Model")
