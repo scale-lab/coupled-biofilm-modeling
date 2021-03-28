@@ -13,7 +13,7 @@ def step(x):
     else:
         return 0
 
-def kuramoto(G):
+def kuramoto(G, custom_k_0):
     '''
     Describes coupling strength for biofilms which is dependent on the amount 
     of current Glutamate in the system. K_0 represents the max coupling strength 
@@ -23,7 +23,10 @@ def kuramoto(G):
     Input: G, the glutamate concentration inside of a microfluidic system at
     some time, t.
     '''
-    os = (param.K_0 * G) / (param.k_theta + G)
+    if (custom_k_0 == None):
+        os = (param.K_0 * G) / (param.k_theta + G)
+    else:
+        os = (custom_k_0 * G) / (param.k_theta + G)
     return os 
 
 def d_omega(G, theta):
@@ -64,7 +67,7 @@ def g_add(g):
     '''
     return param.beta * g
 
-def m_consump(r, g):
+def m_consump(r, g, custom_delta_g):
     '''
     This function defines the metabolic consumption rate of a particular biofilm
     given its size, r, and the current glutamate concentration in the microfluidic
@@ -72,5 +75,10 @@ def m_consump(r, g):
 
     Input: r, the current size of some biofilm at time, t
     Input: g, the current glutamate concentration in microfluidic chamber
+    Input: custom_delta_g, if None, use default param, but otherwise represents
+    custom delta_g to use.
     '''
-    return param.delta_g * r * g
+    if (custom_delta_g == None):
+        return param.delta_g * r * g
+    else:
+        return custom_delta_g * r * g

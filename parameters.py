@@ -11,5 +11,5 @@ beta = 6.37             # Glutmate flow rate
 
 # Phase Diagram Parameters
 delta_g = 1.2           # Glutamate Consumption Rate (Competition Strength)
-K_0 = 0.016             # Maximum coupling strength FIXME: (This is set at the trkA mutation) (This is the communication strength)
-G_t = 1               # External Glutate Concentration
+K_0 = 0.073             # Maximum coupling strength (This is the communication strength)
+G_t = 1                 # External Glutate Concentration

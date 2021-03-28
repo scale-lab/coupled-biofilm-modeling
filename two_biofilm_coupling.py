@@ -24,14 +24,14 @@ def model(z, t):
     Input: t, a float representing the time.
     '''
     # Phase Variables
-    dtheta1_dt = param.w_0 + func.d_omega(z[2], z[0]) + (func.kuramoto(z[2]) * np.sin(z[1] - z[0]))
-    dtheta2_dt = param.w_0 + func.d_omega(z[2], z[1]) + (func.kuramoto(z[2]) * np.sin(z[0] - z[1]))
+    dtheta1_dt = param.w_0 + func.d_omega(z[2], z[0]) + (func.kuramoto(z[2], None) * np.sin(z[1] - z[0]))
+    dtheta2_dt = param.w_0 + func.d_omega(z[2], z[1]) + (func.kuramoto(z[2], None) * np.sin(z[0] - z[1]))
 
     # Glutamate Consumption Rates
     biomass_consump_1 = func.g_con(z[2], z[0])
     biomass_consump_2 = func.g_con(z[2], z[1])
     total_biomass_consump = biomass_consump_1 + biomass_consump_2
-    total_metabolic_consump = func.m_consump(z[3], z[2]) + func.m_consump(z[4], z[2])
+    total_metabolic_consump = func.m_consump(z[3], z[2], None) + func.m_consump(z[4], z[2], None)
     dGdt = func.g_add(param.G_t - z[2]) - total_biomass_consump - total_metabolic_consump
 
     # Biofilm Growth Rates
@@ -52,7 +52,7 @@ t = np.linspace(0, 300, num=5000)
 z = odeint(model, z0, t)
 
 # Creating vectors for various things we may want to graph
-kuramoto = np.array([func.kuramoto(g) for g in z[:,2]])
+kuramoto = np.array([func.kuramoto(g, None) for g in z[:,2]])
 # stress_1 = np.array([1 + np.sin(x) for x in z[:,0]])
 # stress_2 = np.array([1 + np.sin(x) for x in z[:,1]])
 consumption_1 = np.array([func.g_con(x[0], x[1]) for x in zip(z[:,2], z[:,0])])

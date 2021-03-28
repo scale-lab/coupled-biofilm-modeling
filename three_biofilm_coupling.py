@@ -18,13 +18,13 @@ def model(z, t):
                  0          1       2     3   4   5   6
     '''
     # Compute things I will need multiple times
-    kuramoto_strength = func.kuramoto(z[3])
+    kuramoto_strength = func.kuramoto(z[3], None)
     consume_1 = func.g_con(z[3], z[0])
     consume_2 = func.g_con(z[3], z[1])
     consume_3 = func.g_con(z[3], z[2])
-    metabolic_1 = func.m_consump(z[4], z[3])
-    metabolic_2 = func.m_consump(z[5], z[3])
-    metabolic_3 = func.m_consump(z[6], z[3])
+    metabolic_1 = func.m_consump(z[4], z[3], None)
+    metabolic_2 = func.m_consump(z[5], z[3], None)
+    metabolic_3 = func.m_consump(z[6], z[3], None)
 
     # Phase Change ODEs
     dtheta1_dt = param.w_0 + func.d_omega(z[3], z[0]) + (kuramoto_strength * np.sin(z[1] - z[0])) 
@@ -66,8 +66,8 @@ I wonder whether or not I am missing terms in glutamate flow.
 '''
 
 # Initial conditions
-theta1 = 0
-theta2 = 0.1
+theta1 = 3.14
+theta2 = 0
 theta3 = 3.14
 glutamate = param.G_t
 r1 = 0
@@ -76,7 +76,7 @@ r3 = 0
 z0 = [theta1, theta2, theta3, glutamate, r1, r2, r3]
 
 # Set up time
-t = np.linspace(0, 1500, num=1000)
+t = np.linspace(0, 500, num=300)
 
 # ODE Solve
 z = odeint(model, z0, t)
@@ -85,7 +85,7 @@ z = odeint(model, z0, t)
 # plt.plot(t, z[:,0], label="theta1")
 # plt.plot(t, z[:,1], label="theta2")
 # plt.plot(t, z[:,2], label="theta3")
-phase_dif_1_3 = np.abs(z[:,0] - z[:,2])
+phase_dif_1_3 = np.abs(z[:,0] - z[:,2])         # FIXME: I should normalize it first to 2*pi before finding differences
 phase_dif_1_2 = np.abs(z[:,0] - z[:,1])
 phase_dif_2_3 = np.abs(z[:,2] - z[:,1])
 
@@ -96,6 +96,22 @@ plt.xlabel("time")
 plt.ylabel("Phase difference (rad)")
 plt.title("Phase difference between 3 biofilms over time")
 plt.legend()
+
+# Quick and dirty math to try and figure out end of phase
+# FIXME: Take a look more into this. I presume that I have done something wrong...
+phase_mean_1 = np.mean(z[-5:,0]) % (2 * np.pi)
+phase_mean_2 = np.mean(z[-5:,1]) % (2 * np.pi)
+phase_mean_3 = np.mean(z[-5:,2]) % (2 * np.pi)
+print("Mean Phases: {}, {}, {}".format(phase_mean_1, phase_mean_2, phase_mean_3)) 
+print("Phase 1:", np.mean(z[-5:,0]) % (2 * np.pi))
+print("Phase 2:", np.mean(z[-5:,1]) % (2 * np.pi))
+print("Phase 3:", np.mean(z[-5:,2]) % (2 * np.pi))
+print("Phase 1:", np.mod(z[-10:,0], 2 * np.pi))
+print("Phase 2:", np.mod(z[-10:,1], 2 * np.pi))
+print("Phase 3:", np.mod(z[-10:,2], 2 * np.pi))
+
+
+
 plt.show()
 
 # ============================================================================ #
