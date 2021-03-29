@@ -76,18 +76,20 @@ r3 = 0
 z0 = [theta1, theta2, theta3, glutamate, r1, r2, r3]
 
 # Set up time
-t = np.linspace(0, 500, num=300)
+t = np.linspace(0, 1000, num=1000)
 
 # ODE Solve
 z = odeint(model, z0, t)
 
 # Graph the phase difference between z1, z2 and z1, z3
-# plt.plot(t, z[:,0], label="theta1")
-# plt.plot(t, z[:,1], label="theta2")
-# plt.plot(t, z[:,2], label="theta3")
-phase_dif_1_3 = np.abs(z[:,0] - z[:,2])         # FIXME: I should normalize it first to 2*pi before finding differences
-phase_dif_1_2 = np.abs(z[:,0] - z[:,1])
-phase_dif_2_3 = np.abs(z[:,2] - z[:,1])
+modulo_phase_1 = np.mod(z[:,0], 2 * np.pi)
+modulo_phase_2 = np.mod(z[:,1], 2 * np.pi)
+modulo_phase_3 = np.mod(z[:,2], 2 * np.pi)
+
+
+phase_dif_1_3 = np.abs(modulo_phase_1 - modulo_phase_3)         
+phase_dif_1_2 = np.abs(modulo_phase_1 - modulo_phase_2)
+phase_dif_2_3 = np.abs(modulo_phase_2 - modulo_phase_3)
 
 plt.plot(t, phase_dif_1_2, label="abs(phase1 - phase2)")
 plt.plot(t, phase_dif_2_3, label="abs(phase3 - phase2)")

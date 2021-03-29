@@ -4,6 +4,9 @@ import parameters as param
 import functions as func
 import os
 
+# FIXME: it might be good to change the name of this later so it is easier to 
+#        tell what this file is.
+
 '''
 This is just a quick file that takes the information from three_biofilm_coupling
 and then applies it to a variety of different experiments. That is, we change
@@ -74,7 +77,7 @@ G_STEPS = 10
 K_STEPS = 5
 DELTA_STEPS = 5
 OUTPUT_FILE = "output/three_biofilm_analysis.csv" 
-TABLE_LABELS = "glutamate_concentration, competition_strength, communication_strength, biofilm_1_initial_phase, biofilm_3_initial_phase, mean_output_phase1, mean_output_phase2, mean_output_phase3, phase_dif_1_2, phase_dif_2_3, phase_dif_1_3\n"
+TABLE_LABELS = "glutamate_concentration,competition_strength,communication_strength,biofilm_1_initial_phase,biofilm_3_initial_phase,mean_output_phase1,mean_output_phase2,mean_output_phase3,phase_dif_1_2,phase_dif_2_3,phase_dif_1_3\n"
 
 # ============================================================================ #
 # Open file descriptor and write first line
