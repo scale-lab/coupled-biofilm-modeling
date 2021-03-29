@@ -7,12 +7,42 @@ import matplotlib.pyplot as plt
 # Use seaborn themes instead of matplotlib
 sns.set()
 
+
+def find_label(first, second, third, fourth):
+    # Compute boolean values
+    and_gate = (not first) and (not second) and (not third) and (fourth)
+    or_gate = (not first) and second and third and fourth
+    nor_gate = first and (not second) and (not third) and (not fourth)
+    nand_gate = first and second and third and (not fourth)
+    xor_gate = (not first) and second and third and (not fourth)
+    unknown = (not and_gate) and (not or_gate) and (not nor_gate) and (not nand_gate) and (not xor_gate)
+
+    # Assign numbers to each one
+    if and_gate:
+        label = "AND"
+    elif or_gate:
+        label = "OR"
+    elif nor_gate:
+        label = "NOR"
+    elif nand_gate:
+        label = "NAND"
+    elif xor_gate:
+        label = "XOR"
+    else:
+        label = "UNKNOWN"
+
+    return label
+
+
+# ============================================================================ #
+
 '''
 This is the file I will use in order to interpret the data that I gathered in
 three_biofilm_analysis.py 
 '''
 
-filename = "output/three_biofilm_analysis_fast.csv"
+
+filename = "output/three_biofilm_analysis_slower.csv"
 
 # Read in the file
 df = pd.read_csv(filename)
@@ -42,18 +72,18 @@ print(zero_zero)
 # Zero Zero input (Convert phase differences into boolean indicators)
 THRESHOLD_VAL = 1
 
-zero_zero['phase_dif_1_2'] = (zero_zero['phase_dif_1_2'] > THRESHOLD_VAL).astype(int)
-zero_zero['phase_dif_1_3'] = (zero_zero['phase_dif_1_3'] > THRESHOLD_VAL).astype(int)
-zero_zero['phase_dif_2_3'] = (zero_zero['phase_dif_2_3'] > THRESHOLD_VAL).astype(int)
-one_zero['phase_dif_1_2'] = (one_zero['phase_dif_1_2'] > THRESHOLD_VAL).astype(int)
-one_zero['phase_dif_1_3'] = (one_zero['phase_dif_1_3'] > THRESHOLD_VAL).astype(int)
-one_zero['phase_dif_2_3'] = (one_zero['phase_dif_2_3'] > THRESHOLD_VAL).astype(int)
-zero_one['phase_dif_1_2'] = (zero_one['phase_dif_1_2'] > THRESHOLD_VAL).astype(int)
-zero_one['phase_dif_1_3'] = (zero_one['phase_dif_1_3'] > THRESHOLD_VAL).astype(int)
-zero_one['phase_dif_2_3'] = (zero_one['phase_dif_2_3'] > THRESHOLD_VAL).astype(int)
-one_one['phase_dif_1_2'] = (one_one['phase_dif_1_2'] > THRESHOLD_VAL).astype(int)
-one_one['phase_dif_1_3'] = (one_one['phase_dif_1_3'] > THRESHOLD_VAL).astype(int)
-one_one['phase_dif_2_3'] = (one_one['phase_dif_2_3'] > THRESHOLD_VAL).astype(int)
+zero_zero['phase_dif_1_2_bin'] = (zero_zero['phase_dif_1_2'] > THRESHOLD_VAL).astype(int)
+zero_zero['phase_dif_1_3_bin'] = (zero_zero['phase_dif_1_3'] > THRESHOLD_VAL).astype(int)
+zero_zero['phase_dif_2_3_bin'] = (zero_zero['phase_dif_2_3'] > THRESHOLD_VAL).astype(int)
+one_zero['phase_dif_1_2_bin'] = (one_zero['phase_dif_1_2'] > THRESHOLD_VAL).astype(int)
+one_zero['phase_dif_1_3_bin'] = (one_zero['phase_dif_1_3'] > THRESHOLD_VAL).astype(int)
+one_zero['phase_dif_2_3_bin'] = (one_zero['phase_dif_2_3'] > THRESHOLD_VAL).astype(int)
+zero_one['phase_dif_1_2_bin'] = (zero_one['phase_dif_1_2'] > THRESHOLD_VAL).astype(int)
+zero_one['phase_dif_1_3_bin'] = (zero_one['phase_dif_1_3'] > THRESHOLD_VAL).astype(int)
+zero_one['phase_dif_2_3_bin'] = (zero_one['phase_dif_2_3'] > THRESHOLD_VAL).astype(int)
+one_one['phase_dif_1_2_bin'] = (one_one['phase_dif_1_2'] > THRESHOLD_VAL).astype(int)
+one_one['phase_dif_1_3_bin'] = (one_one['phase_dif_1_3'] > THRESHOLD_VAL).astype(int)
+one_one['phase_dif_2_3_bin'] = (one_one['phase_dif_2_3'] > THRESHOLD_VAL).astype(int)
 
 # ============================================================================ #
 fig = plt.figure()
@@ -105,7 +135,66 @@ ax.set_ylabel('Communication Strength')
 ax.set_zlabel('Glutamate Concentration')
 ax.set_title('One One Input into 3 Biofilm System')
 
-plt.show()
+#plt.show()
+
+# ============================================================================ #
+# See if I can make it easier to analyze everything, so I will just make a new text
+# document to do my bidding
+
+# FIXME: This is only based on the phase difference between 1 and 2
+
+OUTPUT_FILE = 'output/three_biofilm_gates.csv'
+out = open(OUTPUT_FILE, 'w')
+out.write("g,k,delta,o_first,o_second,o_third,o_fourth,first,second,third,fourth,gate_label\n")
+
+# Grab numpy array of g, k, delta
+g_vec = zero_zero['glutamate_concentration'].to_numpy()
+k_vec = zero_zero['communication_strength'].to_numpy()
+delta_vec = zero_zero['competition_strength'].to_numpy()
+
+ofirst_vec = zero_zero['phase_dif_1_2'].to_numpy()
+osecond_vec = zero_one['phase_dif_1_2'].to_numpy()
+othird_vec = one_zero['phase_dif_1_2'].to_numpy()
+ofourth_vec = one_one['phase_dif_1_2'].to_numpy()
+
+first_vec = zero_zero['phase_dif_1_2_bin'].to_numpy()
+second_vec = zero_one['phase_dif_1_2_bin'].to_numpy()
+third_vec = one_zero['phase_dif_1_2_bin'].to_numpy()
+fourth_vec = one_one['phase_dif_1_2_bin'].to_numpy()
+
+for i in range(250):
+    g = g_vec[i]
+    k = k_vec[i]
+    delta = delta_vec[i]
+
+    ofirst = ofirst_vec[i]
+    osecond = osecond_vec[i]
+    othird = othird_vec[i]
+    ofourth = ofourth_vec[i]
+
+    first = first_vec[i]
+    second = second_vec[i]
+    third = third_vec[i]
+    fourth = fourth_vec[i]
+
+    label = find_label(first, second, third, fourth)
+
+    string = str(g) + "," \
+           + str(k) + "," \
+           + str(delta) + "," \
+           + str(ofirst) + "," \
+           + str(osecond) + "," \
+           + str(othird) + "," \
+           + str(ofourth) + "," \
+           + str(first) + "," \
+           + str(second) + "," \
+           + str(third) + "," \
+           + str(fourth) + "," \
+           + str(label) + '\n'
+
+    out.write(string)
+
+out.close()
 
 
 

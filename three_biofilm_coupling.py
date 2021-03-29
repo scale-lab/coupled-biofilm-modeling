@@ -66,9 +66,9 @@ I wonder whether or not I am missing terms in glutamate flow.
 '''
 
 # Initial conditions
-theta1 = 3.14
+theta1 = np.pi
 theta2 = 0
-theta3 = 3.14
+theta3 = np.pi
 glutamate = param.G_t
 r1 = 0
 r2 = 0
@@ -101,16 +101,9 @@ plt.legend()
 
 # Quick and dirty math to try and figure out end of phase
 # FIXME: Take a look more into this. I presume that I have done something wrong...
-phase_mean_1 = np.mean(z[-5:,0]) % (2 * np.pi)
-phase_mean_2 = np.mean(z[-5:,1]) % (2 * np.pi)
-phase_mean_3 = np.mean(z[-5:,2]) % (2 * np.pi)
-print("Mean Phases: {}, {}, {}".format(phase_mean_1, phase_mean_2, phase_mean_3)) 
-print("Phase 1:", np.mean(z[-5:,0]) % (2 * np.pi))
-print("Phase 2:", np.mean(z[-5:,1]) % (2 * np.pi))
-print("Phase 3:", np.mean(z[-5:,2]) % (2 * np.pi))
-print("Phase 1:", np.mod(z[-10:,0], 2 * np.pi))
-print("Phase 2:", np.mod(z[-10:,1], 2 * np.pi))
-print("Phase 3:", np.mod(z[-10:,2], 2 * np.pi))
+print("phase_dif 1 3 mean:", np.mean(phase_dif_1_3[-10:]))
+print("phase_dif 2 3 mean:", np.mean(phase_dif_2_3[-10:]))
+print("phase_dif 1 2 mean:", np.mean(phase_dif_1_2[-10:]))
 
 
 

@@ -12,4 +12,4 @@ beta = 6.37             # Glutmate flow rate
 # Phase Diagram Parameters
 delta_g = 1.2           # Glutamate Consumption Rate (Competition Strength)
 K_0 = 0.073             # Maximum coupling strength (This is the communication strength)
-G_t = 1                 # External Glutate Concentration
+G_t = 1.388                 # External Glutate Concentration
