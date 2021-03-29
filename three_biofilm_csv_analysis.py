@@ -12,7 +12,7 @@ This is the file I will use in order to interpret the data that I gathered in
 three_biofilm_analysis.py 
 '''
 
-filename = "output/three_biofilm_analysis.csv"
+filename = "output/three_biofilm_analysis_fast.csv"
 
 # Read in the file
 df = pd.read_csv(filename)

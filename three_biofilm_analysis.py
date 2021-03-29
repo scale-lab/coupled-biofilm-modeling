@@ -63,8 +63,8 @@ def model(z, t, c_g, c_delta, c_k):
 
 # ============================================================================ #
 # Hyperparameters for our testing
-TIME_VECTOR_LENGTH = 300
-FINAL_TIME = 500
+TIME_VECTOR_LENGTH = 1000
+FINAL_TIME = 1000
 AMOUNT_MEAN_POINTS = 10
 R1 = 0
 R2 = 0
@@ -76,7 +76,7 @@ DELTA_RANGE = (1, 100) # Note: these are normalized values based on WT at 1
 G_STEPS = 10
 K_STEPS = 5
 DELTA_STEPS = 5
-OUTPUT_FILE = "output/three_biofilm_analysis.csv" 
+OUTPUT_FILE = "output/three_biofilm_analysis_slower.csv" 
 TABLE_LABELS = "glutamate_concentration,competition_strength,communication_strength,biofilm_1_initial_phase,biofilm_3_initial_phase,mean_output_phase1,mean_output_phase2,mean_output_phase3,phase_dif_1_2,phase_dif_2_3,phase_dif_1_3\n"
 
 # ============================================================================ #
