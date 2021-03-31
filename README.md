@@ -30,14 +30,17 @@ This repository contains python code to perform mathematical modelling on couple
 4. Feel free to go around and change some of the hyperparameters in the **three_biofilm_testing.py** file to create a new .csv file containing information that may be different from what .csvs I already have produced
 5. For the csv_analysis and the graphing, all we really need to do to be able to run it on new .csvs created from the three_biofilm_testing is to change the filename global variables in the files.
 
-### Issues
+### Code Issues
 
-- Right now, all of the testing and graphing I have done so far depends on the ability to set initial phases of biofilms which I am not sure whether that is possible, but something to think about
 - In the testing file, to determine phase difference, I only use the last 10 points in the solved phase vectors but in order to approach correct mean values, I should be using a larger amount of points, but this is dependent on the time vector.
 - The testing file runs quite slowly but it is a highly parallelizable program, meaning that with a couple of threads, I should be able to cut down quite a bit on the time to run programs, meaning we can run much more complex programs
+- Right now, the graphs and images that I have produced only look at the phase difference between biofilms 1 and 2. We need to determine in our computing system, what does it mean to be in phase and out of phase for the second biofilm. Maybe we the middle biofilm to be out of phase or in phase with both of the other biofilms? 
+
+### Higher Level Conceptual Questions
+
+- Right now, all of the testing and graphing I have done so far depends on the ability to set initial phases of biofilms which I am not sure whether that is possible, but something to think about
 - At the moment, we determine some threshold for assigning some value to in phase or out of phase but I have just chosen a pretty arbitrary value (1 radian) at the moment without much thought. In the future, it may be a good idea to determine the best value for thresholding this value
   - This brings into the question that this type of computing is nonregenerative. That is, after one gate, in-phase might be something like 2.8 radians out of phase, where true out of phase is pi radians. We might have to think about this more in order to get any type of conventional computing that makes sense here.
-- Right now, the graphs and images that I have produced only look at the phase difference between biofilms 1 and 2. We need to determine in our computing system, what does it mean to be in phase and out of phase for the second biofilm. Maybe we the middle biofilm to be out of phase or in phase with both of the other biofilms? Will talk to professor Reda about this
 - At the moment, this biofilm computation is kind of different from conventional computing in that inputs are destroyed when something is computed. This means that if multiple biofilms need to use the same computation, we run into huge issues. We also run into issues in that this input being related to the output and the output being related to the input makes the computation more of a graph rather than a tree, which is not typical of conventional computing
   - I wonder whether there are papers on graph type conventional computing? 
   - Maybe this is where we need to realize that this idea of gates and conventional computing applied to biofilm computing may not work as intended and that maybe we should instead be trying to analyze coupling of many biofilms instead to do something a little more unconventional.
