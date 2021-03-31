@@ -7,6 +7,10 @@ import matplotlib.pyplot as plt
 # Use seaborn themes instead of matplotlib
 sns.set()
 
+'''
+This is the file I will use in order to interpret the data that I gathered in
+three_biofilm_analysis.py 
+'''
 
 def find_label(first, second, third, fourth):
     # Compute boolean values
@@ -35,12 +39,6 @@ def find_label(first, second, third, fourth):
 
 
 # ============================================================================ #
-
-'''
-This is the file I will use in order to interpret the data that I gathered in
-three_biofilm_analysis.py 
-'''
-
 
 filename = "output/three_biofilm_analysis_slower.csv"
 
@@ -138,12 +136,13 @@ ax.set_title('One One Input into 3 Biofilm System')
 #plt.show()
 
 # ============================================================================ #
-# See if I can make it easier to analyze everything, so I will just make a new text
-# document to do my bidding
-
-# FIXME: This is only based on the phase difference between 1 and 2
+# See if I can make it easier to analyze everything, so this makes a new csv
+# document that contains information necessary to characterize particular combinations
+# as logic gates by.
+# FIXME: Right now, we only factor in the phase difference between 1 and 2
 
 OUTPUT_FILE = 'output/three_biofilm_gates.csv'
+NUM_ROWS = 250
 out = open(OUTPUT_FILE, 'w')
 out.write("g,k,delta,o_first,o_second,o_third,o_fourth,first,second,third,fourth,gate_label\n")
 
@@ -162,7 +161,8 @@ second_vec = zero_one['phase_dif_1_2_bin'].to_numpy()
 third_vec = one_zero['phase_dif_1_2_bin'].to_numpy()
 fourth_vec = one_one['phase_dif_1_2_bin'].to_numpy()
 
-for i in range(250):
+# Loop through all rows
+for i in range(NUM_ROWS):
     g = g_vec[i]
     k = k_vec[i]
     delta = delta_vec[i]
