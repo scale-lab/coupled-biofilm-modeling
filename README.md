@@ -2,7 +2,7 @@
 
 This repository contains python code to perform mathematical modelling on coupled biofilms. We start with a baseline two biofilm coupled model that is a copy of the one proposed in the supplemental papers for the [*Coupling between distant biofilms and emergence of nutrient time-sharing* paper](https://science.sciencemag.org/content/356/6338/638). While we start from this baseline, this repository tries to build on this two biofilm model and try and model N number of biofilms and how they may be coupled. These models will ultimately help us build experiments for creating logic gates and other forms of computation using the coupled nature of biofilms and their oscillating behavior.
 
-![gate_level_description](https://github.com/scale-lab/coupled_biofilm_modeling/img/gate_level_description.PNG)
+![gate_level_description](https://github.com/scale-lab/coupled-biofilm-modeling/blob/main/img/gate_level_description.PNG)
 
 **Figure 1**: Initial gate level description of three biofilm model with three hyperparameters (g, k, delta) given the assumption that we can, at runtime, set the phases of biofilm 1 and biofilm 3.
 
