@@ -26,7 +26,8 @@ def kuramoto(G, custom_k_0):
     if (custom_k_0 == None):
         os = (param.K_0 * G) / (param.k_theta + G)
     else:
-        os = (custom_k_0 * G) / (param.k_theta + G)
+        os = (custom_k_0 * G) 
+        os = os / (param.k_theta + G)
     return os 
 
 def d_omega(G, theta):
