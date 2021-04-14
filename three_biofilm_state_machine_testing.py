@@ -30,19 +30,19 @@ annoying, but I presume I will just use the lab servers when those come back up)
 
 # ============================================================================ #
 # Hyperparameters for our testing
-TIME_VECTOR_LENGTH = 1000
-FINAL_TIME = 1000
-AMOUNT_MEAN_POINTS = 10
+TIME_VECTOR_LENGTH = 4000
+FINAL_TIME = 2000
+AMOUNT_MEAN_POINTS = 100
 R1 = 0
 R2 = 0
 R3 = 0
 G_RANGE = (0.5, 2.5)
 K_RANGE = (0.2, 1.2) # Note: these are normalized values based on WT
 DELTA_RANGE = (1, 100) # Note: these are normalized values based on WT at 1
-G_STEPS = 10
-K_STEPS = 5
-DELTA_STEPS = 5
-OUTPUT_FILE = "output/three_biofilm_fsm_first_test.csv" 
+G_STEPS = 15
+K_STEPS = 15
+DELTA_STEPS = 15
+OUTPUT_FILE = "output/three_biofilm_fsm_long_test.csv" 
 TABLE_LABELS = "glutamate_concentration,competition_strength,communication_strength,biofilm_1_initial_phase,biofilm_2_initial_phase,biofilm_3_initial_phase,mean_output_phase1,mean_output_phase2,mean_output_phase3,phase_dif_1_2,phase_dif_2_3,phase_dif_1_3\n"
 
 # First calculate the vectors in which we will be using
@@ -167,6 +167,7 @@ def compute_odes(f):
 # ============================================================================ #
 # Main process
 with open(OUTPUT_FILE, "w") as f:
+    f.write(TABEL_LABELS)
     compute_odes(f)
 
 # TODO: Multithreading is not allowed on ODEINT
