@@ -167,7 +167,7 @@ def compute_odes(f):
 # ============================================================================ #
 # Main process
 with open(OUTPUT_FILE, "w") as f:
-    f.write(TABEL_LABELS)
+    f.write(TABLE_LABELS)
     compute_odes(f)
 
 # TODO: Multithreading is not allowed on ODEINT
