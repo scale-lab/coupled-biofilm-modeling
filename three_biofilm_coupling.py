@@ -76,7 +76,7 @@ r3 = 0
 z0 = [theta1, theta2, theta3, glutamate, r1, r2, r3]
 
 # Set up time
-t = np.linspace(0, 1000, num=1000)
+t = np.linspace(0, 2000, num=4000)
 
 # ODE Solve
 z = odeint(model, z0, t)
@@ -85,6 +85,16 @@ z = odeint(model, z0, t)
 modulo_phase_1 = np.mod(z[:,0], 2 * np.pi)
 modulo_phase_2 = np.mod(z[:,1], 2 * np.pi)
 modulo_phase_3 = np.mod(z[:,2], 2 * np.pi)
+
+plt.plot(t, modulo_phase_1, label="mod1")
+plt.plot(t, modulo_phase_2, label="mod2")
+plt.plot(t, modulo_phase_3, label="mod3")
+plt.xlabel("time")
+plt.ylabel("Phase Modulo")
+plt.title("Phase difference between 3 biofilms over time")
+plt.legend()
+plt.show()
+
 
 
 phase_dif_1_3 = np.abs(modulo_phase_1 - modulo_phase_3)         
@@ -101,9 +111,9 @@ plt.legend()
 
 # Quick and dirty math to try and figure out end of phase
 # FIXME: Take a look more into this. I presume that I have done something wrong...
-print("phase_dif 1 3 mean:", np.mean(phase_dif_1_3[-10:]))
-print("phase_dif 2 3 mean:", np.mean(phase_dif_2_3[-10:]))
-print("phase_dif 1 2 mean:", np.mean(phase_dif_1_2[-10:]))
+print("phase_dif 1 3 mean:", np.mean(phase_dif_1_3[-100:]))
+print("phase_dif 2 3 mean:", np.mean(phase_dif_2_3[-100:]))
+print("phase_dif 1 2 mean:", np.mean(phase_dif_1_2[-100:]))
 
 
 
