@@ -67,7 +67,7 @@ I wonder whether or not I am missing terms in glutamate flow.
 
 # Initial conditions
 theta1 = np.pi
-theta2 = 0
+theta2 = np.pi
 theta3 = np.pi
 glutamate = param.G_t
 r1 = 0
@@ -110,7 +110,9 @@ plt.title("Phase difference between 3 biofilms over time")
 plt.legend()
 
 # Quick and dirty math to try and figure out end of phase
-# FIXME: Take a look more into this. I presume that I have done something wrong...
+print("Phase 1 Mean:", np.mean(modulo_phase_1[-100:]))
+print("Phase 2 Mean:", np.mean(modulo_phase_2[-100:]))
+print("Phase 3 Mean:", np.mean(modulo_phase_3[-100:]))
 print("phase_dif 1 3 mean:", np.mean(phase_dif_1_3[-100:]))
 print("phase_dif 2 3 mean:", np.mean(phase_dif_2_3[-100:]))
 print("phase_dif 1 2 mean:", np.mean(phase_dif_1_2[-100:]))
@@ -122,12 +124,12 @@ plt.show()
 # ============================================================================ #
 
 # Graph of regular variables
-plt.plot(t, z[:,3], label="G")
-plt.plot(t, z[:,4], label="r1")
-plt.plot(t, z[:,5], label="r2")
-plt.plot(t, z[:,6], label="r3")
-plt.legend()
-plt.show()
+# plt.plot(t, z[:,3], label="G")
+# plt.plot(t, z[:,4], label="r1")
+# plt.plot(t, z[:,5], label="r2")
+# plt.plot(t, z[:,6], label="r3")
+# plt.legend()
+# plt.show()
 
 # ============================================================================ #
 
