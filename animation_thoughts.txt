@@ -1,0 +1,19 @@
+Just like with the two biofilm system, there seems to be a concentration threshold in which
+we are able to see two different patterns within the biofilms
+
+// This is only for quick transient solutions rather than looking purely at the steady state. It also
+// does not seem like this is an end all be all answer to the question.
+
+IF LOW CONCENTRATION OF GLUTAMATE:
+	- If they are already out of sync, they will stay out of sync (or at least that is what the simulations show)
+ 	  This is only to a certain extent and if within some threshold, they can still switch
+	- If already in sync, they will stay in sync.
+	- Basically, they will just take on whatever old value that they have.
+
+
+IF HIGH CONCENTRATION OF GLUTAMATE:
+	- If in sync, will go in sync
+	- If out of sync, will go in sync with each other
+
+Now, if above or below some threshold by a certain margin, the greater or lesser the concentration of glutamate,
+the quicker they get to that position.

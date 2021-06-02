@@ -48,18 +48,20 @@ def model(z, t):
     dr1dt = consume_1 - ((param.delta_r * z[4]) / (param.k_r + z[4]))
     dr2dt = consume_2 - ((param.delta_r * z[5]) / (param.k_r + z[5]))
     dr3dt = consume_3 - ((param.delta_r * z[6]) / (param.k_r + z[6]))
-    return [dtheta1_dt, dtheta2_dt, dtheta3_dt, dGdt, dr1dt, dr2dt, dr3dt] 
+
+    dydx = [dtheta1_dt, dtheta2_dt, dtheta3_dt, dGdt, dr1dt, dr2dt, dr3dt] 
+    return dydx
 
 # Initial conditions
-theta1 = np.pi
-theta2 = np.pi
-theta3 = 0
+theta1 = 0
+theta2 = 3.14
+theta3 = 3.14
 glutamate = param.G_t
 r1 = 0
 r2 = 0
 r3 = 0
 z0 = [theta1, theta2, theta3, glutamate, r1, r2, r3]
-num_points = 400
+num_points = 800
 end_time = 200
 dt = end_time / num_points
 t = np.linspace(0, end_time, num=num_points)
@@ -140,7 +142,10 @@ def animate(i):
 
 ani = animation.FuncAnimation(fig, animate, len(t), interval=dt)
 
-# TODO: make the save gif name a lot better so it is easier to tell what is going on
-#ani.save('output/three_biofilm.gif', writer=animation.PillowWriter(fps=15))
+# ================
+# Save animation
+output_name = 'output/' + str(glutamate) + '_' + str(theta1) + '_' + str(theta2) + '_' + str(theta3) + '_' + 'wild_three_biofilm.gif'
+
+ani.save(output_name, writer=animation.PillowWriter(fps=(6/dt)))
 
 plt.show()
