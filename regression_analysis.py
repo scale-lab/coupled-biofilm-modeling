@@ -26,7 +26,12 @@ def extract_values(data_df):
 
 FILENAME = 'output/three_biofilm_fsm_long_test.csv'
 df = pd.read_csv(FILENAME)
+
+# Normalize df
+df = (df - df.mean()) / df.std()
+
 x = df[['glutamate_concentration','competition_strength','communication_strength','biofilm_1_initial_phase','biofilm_2_initial_phase','biofilm_3_initial_phase']]
+# Also might be good to try a non linear model as this may not capture everything
 y1 = df['phase_dif_1_2']
 y2 = df['phase_dif_2_3']
 y3 = df['phase_dif_1_3']

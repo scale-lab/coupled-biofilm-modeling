@@ -60,15 +60,12 @@ since we do not really know much. At the moment, we get graphs where the glutama
 concentration just dives down to 0 pretty quickly, which for some reason makes
 our r values negative.
 
-FIXME: Consumption just goes negative for some reason. I believe under further
-investigation, this is coming from the glutamate concentration going negative? 
-I wonder whether or not I am missing terms in glutamate flow.
 '''
 
 # Initial conditions
-theta1 = np.pi
+theta1 = 0
 theta2 = np.pi
-theta3 = np.pi
+theta3 = 0
 glutamate = param.G_t
 r1 = 0
 r2 = 0
