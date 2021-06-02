@@ -72,9 +72,9 @@ t1 = z[:, 0]
 t2 = z[:, 1]
 t3 = z[:, 2]
 g = z[:, 3]
-size1 = z[:, 4]
-size2 = z[:, 5]
-size3 = z[:, 6]
+size1 = z[:, 4] * SIZE
+size2 = z[:, 5] * SIZE
+size3 = z[:, 6] * SIZE
 
 # Convert the stress phases into 
 modulo_phase_1 = np.mod(z[:,0], 2 * np.pi)
@@ -124,6 +124,11 @@ def animate(i):
     b = ax.scatter (0, 0, c = modulo_phase_2[i], vmin = 0, vmax = 2*np.pi, cmap = C, s=SIZE)
     c = ax.scatter (1.25, 0, c = modulo_phase_3[i], vmin = 0, vmax = 2*np.pi, cmap = C, s=SIZE)
 
+    # If want to have with size as well as with phase
+    # a = ax.scatter (-1.25, 0, c = modulo_phase_1[i], vmin = 0, vmax = 2*np.pi, cmap = C, s=size1[i])
+    # b = ax.scatter (0, 0, c = modulo_phase_2[i], vmin = 0, vmax = 2*np.pi, cmap = C, s=size2[i])
+    # c = ax.scatter (1.25, 0, c = modulo_phase_3[i], vmin = 0, vmax = 2*np.pi, cmap = C, s=size3[i])
+
     # Append 
     scatters = scatters + [a, b, c]
 
@@ -136,6 +141,6 @@ def animate(i):
 ani = animation.FuncAnimation(fig, animate, len(t), interval=dt)
 
 # TODO: make the save gif name a lot better so it is easier to tell what is going on
-ani.save('output/three_biofilm.gif', writer=animation.PillowWriter(fps=15))
+#ani.save('output/three_biofilm.gif', writer=animation.PillowWriter(fps=15))
 
 plt.show()
