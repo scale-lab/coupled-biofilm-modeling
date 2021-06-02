@@ -1,7 +1,9 @@
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.animation as animation
 from scipy.integrate import odeint 
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import matplotlib
 import numpy as np
 from numpy import sin, cos
 
@@ -10,7 +12,7 @@ import parameters as param
 import functions as func
 
 # Animation Parameters
-SIZE = 3000
+SIZE = 4500
 C = cm.twilight_shifted
 
 # Model Definition
@@ -57,8 +59,8 @@ r1 = 0
 r2 = 0
 r3 = 0
 z0 = [theta1, theta2, theta3, glutamate, r1, r2, r3]
-num_points = 100
-end_time = 50
+num_points = 400
+end_time = 200
 dt = end_time / num_points
 t = np.linspace(0, end_time, num=num_points)
 
@@ -81,6 +83,21 @@ modulo_phase_3 = np.mod(z[:,2], 2 * np.pi)
 
 # Configure the plot
 fig = plt.figure()
+ax = fig.add_subplot(111, autoscale_on=False, xlim=(-2, 2), ylim=(-2, 2))
+scatters = []
+
+# Create easy to understand colorbar
+divider = make_axes_locatable(ax)
+cax = divider.append_axes('right', size='5%', pad=0.05)
+norm = matplotlib.colors.Normalize(vmin=0, vmax=2*np.pi)
+colorbar = matplotlib.colorbar.ColorbarBase(cax, cmap=C,norm=norm,orientation='vertical')
+colorbar.set_label("Phase Angle of Biofilm (Rads)")
+
+
+# Create Titles axes and get rid of ticks on the graph
+ax.set_title("Three Biofilm Animation with Initial Phase: {} {} {}".format(round(theta1, 2), round(theta2, 2), round(theta3, 2)))
+ax.set_xticks([])
+ax.set_yticks([])
 
 # Text templates and initial declarations (where they exist on the map)
 time_template = 'time = %.1f'
@@ -88,29 +105,37 @@ theta1_template = 'Theta1 =%.2f'
 theta2_template = 'Theta2 =%.2f'
 theta3_template = 'Theta3 =%.2f'
 
+time_text =  ax.text(-1.8, 1.75, '')
+theta1_text = ax.text(-1.8, 1.5, '')
+theta2_text = ax.text(-1.8, 1.25, '')
+theta3_text =  ax.text(-1.8, 1.0, '')
+
 #===========
 def animate(i):
-    fig.clear()
-    ax = fig.add_subplot(111, autoscale_on=False, xlim=(-2, 2), ylim=(-2, 2))
+    # Clear scatter plots
+    global scatters
+    for s in scatters:
+        s.remove()
     
-    # Create Titles axes and things
-    ax.set_title("MOO")
-    ax.set_xticks([])
-    ax.set_yticks([])
-    
+    scatters = []
+
     # Create 1 value scatter plots representing each of the points
-    plt.scatter (-1, 0, c = modulo_phase_1[i], vmin = 0, vmax = 2*np.pi, cmap = C, s=SIZE)
-    plt.scatter (0, 0, c = modulo_phase_2[i], vmin = 0, vmax = 2*np.pi, cmap = C, s=SIZE)
-    plt.scatter (1, 0, c = modulo_phase_3[i], vmin = 0, vmax = 2*np.pi, cmap = C, s=SIZE)
+    a = ax.scatter (-1.25, 0, c = modulo_phase_1[i], vmin = 0, vmax = 2*np.pi, cmap = C, s=SIZE)
+    b = ax.scatter (0, 0, c = modulo_phase_2[i], vmin = 0, vmax = 2*np.pi, cmap = C, s=SIZE)
+    c = ax.scatter (1.25, 0, c = modulo_phase_3[i], vmin = 0, vmax = 2*np.pi, cmap = C, s=SIZE)
+
+    # Append 
+    scatters = scatters + [a, b, c]
 
     # Update text in the animation
-    ax.text(-1.8, 1.75, time_template % (i*dt))
-    ax.text(-1.8, 1.5, theta1_template % modulo_phase_1[i])
-    ax.text(-1.8, 1.25, theta2_template % modulo_phase_2[i])
-    ax.text(-1.8, 1.0, theta3_template % modulo_phase_3[i])
+    time_text.set_text(time_template % (i * dt))
+    theta1_text.set_text(theta1_template % modulo_phase_1[i])
+    theta2_text.set_text(theta2_template % modulo_phase_2[i])
+    theta3_text.set_text(theta3_template % modulo_phase_3[i])
 
-ani = animation.FuncAnimation(fig, animate, len(t), interval=5)
+ani = animation.FuncAnimation(fig, animate, len(t), interval=dt)
 
+# TODO: make the save gif name a lot better so it is easier to tell what is going on
 ani.save('output/three_biofilm.gif', writer=animation.PillowWriter(fps=15))
 
 plt.show()
