@@ -95,7 +95,6 @@ norm = matplotlib.colors.Normalize(vmin=0, vmax=2*np.pi)
 colorbar = matplotlib.colorbar.ColorbarBase(cax, cmap=C,norm=norm,orientation='vertical')
 colorbar.set_label("Phase Angle of Biofilm (Rads)")
 
-
 # Create Titles axes and get rid of ticks on the graph
 ax.set_title("Three Biofilm Animation with Initial Phase: {} {} {}".format(round(theta1, 2), round(theta2, 2), round(theta3, 2)))
 ax.set_xticks([])
@@ -146,6 +145,6 @@ ani = animation.FuncAnimation(fig, animate, len(t), interval=dt)
 # Save animation
 output_name = 'output/' + str(glutamate) + '_' + str(theta1) + '_' + str(theta2) + '_' + str(theta3) + '_' + 'wild_three_biofilm.gif'
 
-ani.save(output_name, writer=animation.PillowWriter(fps=(6/dt)))
+# ani.save(output_name, writer=animation.PillowWriter(fps=(6/dt)))
 
 plt.show()

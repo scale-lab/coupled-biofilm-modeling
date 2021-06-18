@@ -24,7 +24,7 @@ def extract_values(data_df):
     return data
 
 
-FILENAME = 'output/three_biofilm_fsm_long_test.csv'
+FILENAME = '../output/three_biofilm_fsm_long_test.csv'
 df = pd.read_csv(FILENAME)
 
 # Normalize df

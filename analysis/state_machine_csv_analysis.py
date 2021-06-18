@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 sns.set()
 
 # Read in the file
-filename = "output/three_biofilm_fsm_long_test.csv"
+filename = "../output/three_biofilm_fsm_long_test.csv"
 df = pd.read_csv(filename)
 print(df)
 
@@ -62,5 +62,5 @@ print('MEAN Difference between Biofilm 1 and 2:', df['phase_dif_1_2'].mean())
 print('MEAN Difference between Biofilm 2 and 3:', df['phase_dif_2_3'].mean())
 
 # Output
-df.to_csv(r'output/three_biofilm_fsm_long_test_cleaned_sorted.csv', index=False, header=True)
+df.to_csv(r'../output/three_biofilm_fsm_long_test_cleaned_sorted.csv', index=False, header=True)
 

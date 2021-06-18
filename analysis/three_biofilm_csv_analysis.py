@@ -40,7 +40,7 @@ def find_label(first, second, third, fourth):
 
 # ============================================================================ #
 
-filename = "output/three_biofilm_analysis_slower.csv"
+filename = "../output/three_biofilm_analysis_slower.csv"
 
 # Read in the file
 df = pd.read_csv(filename)

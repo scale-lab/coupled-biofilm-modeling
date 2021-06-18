@@ -96,9 +96,6 @@ t = np.linspace(0, FINAL_TIME, num=TIME_VECTOR_LENGTH)
 # Start!
 print("Start going through")
 # Start looping through all possible combinations
-# FIXME: I know it is possible to get rid of this O(n^4) loop using numpy and
-#        matrix manipulation to do everything, but this shouldn't take that long
-#        to run anyways
 for g in g_vector:
     for k in k_vector:
         for delta in delta_vector:

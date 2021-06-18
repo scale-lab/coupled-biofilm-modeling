@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 sns.set()
 
 # ============================================================================ #
-filename = 'output/three_biofilm_gates.csv'
+filename = '../output/three_biofilm_gates.csv'
 
 # Open the file
 df = pd.read_csv(filename)
